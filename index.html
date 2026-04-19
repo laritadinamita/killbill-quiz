@@ -241,28 +241,37 @@
 
   <script>
     function answer(btn, correct) {
-      document.querySelectorAll('.answer-btn').forEach(b => b.disabled = true);
-      btn.classList.add(correct ? 'correct' : 'wrong');
-      if (!correct) {
-        document.querySelectorAll('.answer-btn').forEach(b => {
-          if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
-        });
-      }
-      document.getElementById(correct ? 'result-good' : 'result-bad').style.display = 'block';
-      document.getElementById('retry-btn').classList.add('show');
-      if (!correct) document.getElementById('app').classList.add('glitch');
-    }
+  document.querySelectorAll('.answer-btn').forEach(b => b.disabled = true);
+  btn.classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) {
+    document.querySelectorAll('.answer-btn').forEach(b => {
+      if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+    });
+  }
+  document.getElementById(correct ? 'result-good' : 'result-bad').style.display = 'block';
+  document.getElementById('retry-btn').classList.add('show');
+  if (!correct) document.getElementById('app').classList.add('glitch');
 
-    function reset() {
-      document.querySelectorAll('.answer-btn').forEach(b => {
-        b.disabled = false;
-        b.classList.remove('correct', 'wrong');
-      });
-      document.getElementById('result-good').style.display = 'none';
-      document.getElementById('result-bad').style.display = 'none';
-      document.getElementById('retry-btn').classList.remove('show');
-      document.getElementById('app').classList.remove('glitch');
-    }
+  // GA4 event
+  gtag('event', 'quiz_answer', {
+    answer_text: btn.innerText,
+    is_correct: correct
+  });
+}
+
+function reset() {
+  document.querySelectorAll('.answer-btn').forEach(b => {
+    b.disabled = false;
+    b.classList.remove('correct', 'wrong');
+  });
+  document.getElementById('result-good').style.display = 'none';
+  document.getElementById('result-bad').style.display = 'none';
+  document.getElementById('retry-btn').classList.remove('show');
+  document.getElementById('app').classList.remove('glitch');
+
+  // GA4 event
+  gtag('event', 'quiz_replay');
+}
   </script>
 </body>
 </html>
